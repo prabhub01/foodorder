@@ -20,9 +20,18 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/add-category', [App\Http\Controllers\HomeController::class, 'category'])->name('add-category');
-Route::get('/add-food-item', [App\Http\Controllers\HomeController::class, 'fooditem'])->name('add-food-item');
+
+// CRUD Foodcategory
+Route::get('/add-category', [App\Http\Controllers\FoodcategoryController::class, 'index'])->name('add-category');
 Route::post('/submit', [App\Http\Controllers\FoodcategoryController::class, 'store'])->name('submit');
+Route::get('/editcategory/{id}', [App\Http\Controllers\FoodcategoryController::class, 'edit'])->name('editcategory');
+Route::post('/updatecategory/{id}', [App\Http\Controllers\FoodcategoryController::class, 'update'])->name('updatecategory');
+Route::get('/delete-category/{id}', [App\Http\Controllers\FoodcategoryController::class, 'destroy'])->name('delete-category');
+
+
+// CRUD Fooditems
+Route::get('/add-food-item', [App\Http\Controllers\FooditemController::class, 'index'])->name('add-food-item');
+Route::post('/submit-fooditem', [App\Http\Controllers\FooditemController::class, 'store'])->name('submit-fooditem');
 
 
 

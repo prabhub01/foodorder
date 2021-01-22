@@ -14,7 +14,8 @@ class FoodcategoryController extends Controller
      */
     public function index()
     {
-        //
+        $value=Foodcategory::all();
+        return view('category.addcategory', ['data'=>$value]);
     }
 
     /**
@@ -39,7 +40,7 @@ class FoodcategoryController extends Controller
             'category_name' => 'required'
         ]);
         Foodcategory::create($request->all());
-        return redirect()->route('home')
+        return redirect()->route('add-category')
                         ->with('success','New Category Added successfully.');
     }
 
@@ -49,9 +50,9 @@ class FoodcategoryController extends Controller
      * @param  \App\Models\Foodcategory  $foodcategory
      * @return \Illuminate\Http\Response
      */
-    public function show(Foodcategory $foodcategory)
+    public function show()
     {
-        //
+       
     }
 
     /**
@@ -60,9 +61,10 @@ class FoodcategoryController extends Controller
      * @param  \App\Models\Foodcategory  $foodcategory
      * @return \Illuminate\Http\Response
      */
-    public function edit(Foodcategory $foodcategory)
+    public function edit($id)
     {
-        //
+        $details = Foodcategory::findOrFail($id);
+        return view('category.editcategory', compact('details'));
     }
 
     /**
@@ -72,9 +74,19 @@ class FoodcategoryController extends Controller
      * @param  \App\Models\Foodcategory  $foodcategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Foodcategory $foodcategory)
+    public function update(Request $request, $id)
     {
-        //
+       // dd($request->all()); This is to debug the functions
+       $request->validate([
+        'category_name' => 'required',
+    ]);
+
+    // escape the token field while updating the record
+    $data['category_name']=$request->category_name;
+
+    Foodcategory::whereId($id)->update($data);
+    return redirect()->route('add-category')
+    ->with('success','Category Updated successfully.');
     }
 
     /**
@@ -83,8 +95,10 @@ class FoodcategoryController extends Controller
      * @param  \App\Models\Foodcategory  $foodcategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Foodcategory $foodcategory)
+    public function destroy(Foodcategory $foodcategory, $id)
     {
-        //
+        $foodcategory->destroy($id);
+        return redirect()->route('add-category')
+                        ->with('success','Category deleted successfully');
     }
 }
