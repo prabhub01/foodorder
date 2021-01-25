@@ -80,7 +80,7 @@ class FoodcategoryController extends Controller
        $request->validate([
         'category_name' => 'required',
     ]);
-
+    
     // escape the token field while updating the record
     $data['category_name']=$request->category_name;
 

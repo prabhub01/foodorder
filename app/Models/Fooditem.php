@@ -12,7 +12,7 @@ class Fooditem extends Model
         'item_name', 'price', 'foodcategory_id'
     ];
 
-    function foodcategory(){
+    function category(){
         return $this->belongsTo(Foodcategory::Class, 'foodcategory_id');
     }
 }

@@ -28,10 +28,14 @@ Route::get('/editcategory/{id}', [App\Http\Controllers\FoodcategoryController::c
 Route::post('/updatecategory/{id}', [App\Http\Controllers\FoodcategoryController::class, 'update'])->name('updatecategory');
 Route::get('/delete-category/{id}', [App\Http\Controllers\FoodcategoryController::class, 'destroy'])->name('delete-category');
 
-
 // CRUD Fooditems
 Route::get('/add-food-item', [App\Http\Controllers\FooditemController::class, 'index'])->name('add-food-item');
 Route::post('/submit-fooditem', [App\Http\Controllers\FooditemController::class, 'store'])->name('submit-fooditem');
+Route::get('/editfooditem/{id}', [App\Http\Controllers\FooditemController::class, 'edit'])->name('editfooditem');
+Route::post('/updatefooditem/{id}', [App\Http\Controllers\FooditemController::class, 'update'])->name('updatefooditem');
+Route::get('/delete-fooditem/{id}', [App\Http\Controllers\FooditemController::class, 'destroy'])->name('delete-fooditem');
+
+
 
 
 

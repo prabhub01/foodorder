@@ -15,8 +15,9 @@ class FooditemController extends Controller
      */
     public function index()
     {
-        $data= Foodcategory::get();
-        return view('item.addfooditem', compact('data'));
+        $data= Foodcategory::all();
+        $item= Fooditem::all();
+        return view('item.addfooditem', ['items'=>$item, 'datas'=>$data]);
     }
 
     /**
@@ -65,9 +66,12 @@ class FooditemController extends Controller
      * @param  \App\Models\Fooditem  $fooditem
      * @return \Illuminate\Http\Response
      */
-    public function edit(Fooditem $fooditem)
+    public function edit($id)
     {
-        //
+        $item = Foodcategory::all();
+        $details = Fooditem::findOrFail($id);
+        return view('item.editfooditem', ['val'=>$item, 'details'=>$details]);
+
     }
 
     /**
@@ -77,9 +81,23 @@ class FooditemController extends Controller
      * @param  \App\Models\Fooditem  $fooditem
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Fooditem $fooditem)
+    public function update(Request $request, Fooditem $fooditem, $id)
     {
-        //
+         // dd($request->all()); This is to debug the functions
+         $request->validate([
+            'item_name' => 'required',
+            'price' => 'required',
+            'foodcategory_id' => 'required',
+        ]);
+    
+    // escape the token field while updating the record
+    $data['item_name']=$request->item_name;
+    $data['price']=$request->price;
+    $data['foodcategory_id']=$request->foodcategory_id;
+
+    Fooditem::whereId($id)->update($data);
+    return redirect()->route('add-food-item')
+    ->with('success','Food Item Updated successfully.');
     }
 
     /**
@@ -88,8 +106,10 @@ class FooditemController extends Controller
      * @param  \App\Models\Fooditem  $fooditem
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Fooditem $fooditem)
+    public function destroy(Fooditem $fooditem, $id)
     {
-        //
+        $fooditem->destroy($id);
+        return redirect()->route('add-food-item')
+                        ->with('success','Food deleted successfully');
     }
 }

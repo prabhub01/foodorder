@@ -18,7 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Sweet Alert Message -->
@@ -60,7 +60,7 @@
                                 </li>
                             @endif
                         @else
-                            
+                        <a href="{{ route('home') }}"> <button class="btn"><i class="fa fa-home"></i> Home </button> </a>      
                        <a href="{{ route('add-category') }}"> <button class="btn"><i class="fa fa-plus"></i> Create Category </button> </a>
                        <a href="{{ route('add-food-item') }}"> <button class="btn"><i class="fa fa-plus"></i> Add Food-item </button> </a> 
                         
@@ -122,7 +122,34 @@
         }
     });
 });
-</script>
 
+
+// Sweet Alert Message for deleting Food Item
+$("body").on("click",".remove-item",function(){
+    var current_object = $(this);
+    swal({
+        title: "Are you sure?",
+        text: "You want to remove this Food Item ?",
+        type: "error",
+        showCancelButton: true,
+        dangerMode: true,
+        cancelButtonClass: '#DD6B55',
+        confirmButtonColor: '#dc3545',
+        confirmButtonText: 'Delete!',
+    },function (result) {
+        if (result) {
+            var action = current_object.attr('data-action');
+            var token = jQuery('meta[name="csrf-token"]').attr('content');
+            var id = current_object.attr('data-id');
+
+            $('body').html("<form class='form-inline remove-form' method='get' action='"+action+"'></form>");
+            $('body').find('.remove-form').append('<input name="_method" type="hidden" value="delete">');
+            $('body').find('.remove-form').append('<input name="_token" type="hidden" value="'+token+'">');
+            $('body').find('.remove-form').append('<input name="id" type="hidden" value="'+id+'">');
+            $('body').find('.remove-form').submit();
+        }
+    });
+});
+</script>
 </body>
 </html>
